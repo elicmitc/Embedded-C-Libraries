@@ -35,6 +35,7 @@ void uart_transmit(unsigned char data){
 	/* When the USART Data Register 0 is empty, write the data (byte)
 	 * to the UDR0.
 	 */
+/* Wait for the trasmit buffer to be empty */
 	while(!(UCSR0A & (1 << UDRE0))); // UCSR0A: USART Control and Status Register 0A
 					 // UDRE0: USART Data Register 0 Empty bit index
 	/* UDR0, when filled with data, moves the data to the transmit shift register and 
@@ -42,6 +43,7 @@ void uart_transmit(unsigned char data){
 	 * After transmition and the shift register is empty, the UDREO flag is set to accept
 	 * new data (1).
 	 */
+/* Put data into the buffer, sends data */
 	UDR0 = data; // USART Data Register
 
 /* Send each character in string to transmit */
