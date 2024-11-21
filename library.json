@@ -1,6 +1,6 @@
 {
  "name": "Embedded-C-Libraries",
- "version": "1.0.0",
+ "version": "1.0.2",
  "description": "A collection of reusable embedded C libraries for various microcontrollers",
  "authors": [
   {
