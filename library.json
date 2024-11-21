@@ -1,0 +1,12 @@
+{
+ "name": "Embedded-C-Libraries",
+ "version": "1.0.0",
+ "description": "A collection of reusable embedded C libraries for various microcontrollers",
+ "authors": [
+  {
+   "name": "Elijah Mitchell",
+   "email": "elijahcmitchell@gmail.com"
+  }
+ ],
+ "platforms": ["atmelavr", "espressif32", "ststm32"]
+}
