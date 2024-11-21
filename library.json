@@ -8,5 +8,7 @@
    "email": "elijahcmitchell@gmail.com"
   }
  ],
- "platforms": ["atmelavr", "espressif32", "ststm32"]
+ "platforms": ["atmelavr"],
+ "frameworks": ["atmega2560"],
+ "include": ["ATmega2560/UART"]
 }
