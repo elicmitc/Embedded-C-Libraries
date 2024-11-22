@@ -8,6 +8,8 @@ BAUD = 115200
 TARGET = main
 SRC = $(TARGET).c
 OBJ = $(TARGET).o
+UART_SRC = UART/uart.c
+UART_OBJ = $(UART_SRC:.c=.o)
 ELF = $(TARGET).elf
 HEX = $(TARGET).hex
 
@@ -25,12 +27,19 @@ LDFLAGS = -mmcu=$(MCU)
 all: $(HEX) upload
 # Compile: Create object file
 $(OBJ): $(SRC)
+	@echo "Compiling $(SRC)..."
+	$(CC) $(CFLAGS) -c $< -o $@
+# Compile: Create object file for uart.c
+$(UART_OBJ): $(UART_SRC)
+	@echo "Compiling $(UART_SRC)..."
 	$(CC) $(CFLAGS) -c $< -o $@
 # Link: Create ELF file
-$(ELF): $(OBJ)
-	$(CC) $(LDFLAGS) $< -o $@
+$(ELF): $(OBJ) $(UART_OBJ)
+	@echo "Linking $(OBJ) and $(UART_OBJ) to $@"
+	$(CC) $(LDFLAGS) $^ -o $@
 # Convert: Create HEX file
 $(HEX): $(ELF)
+	@echo "Converting $(ELF) to $(HEX)"
 	$(OBJCOPY) -O ihex -R .eeprom $< $@
 # Upload: Flash HEX file to microcontroller
 upload: $(HEX)
@@ -38,14 +47,17 @@ upload: $(HEX)
 		echo "No USB port found! Cannot upload."; \
 		exit 1; \
 	else \
-		$(AVRDUDE) -D -v -p $(MCU) -c wiring -P $(PORT) -b $(BAUD) -U flash:w:$<:i; \
+		echo "Uploading $(HEX) to $(PORT)..."; \
+		$(AVRDUDE) -v -p $(MCU) -c wiring -P $(PORT) -b $(BAUD) -D -U flash:w:$<:i; \
 	fi
 # Check code size
 size: $(ELF)
+	@echo "Checking code size..."
 	$(SIZE) --format=avr --mcu=$(MCU) $<
 # Clean up generated files
 clean: 
-	rm -f $(OBJ) $(ELF) $(HEX)
+	@echo "Cleaning up...";
+	rm -f $(OBJ) $(UART_OBJ) $(ELF) $(HEX)
 usb: 
 	@if [ -z "$(PORT)" ]; then \
 		echo "No USB port found! Cannot upload."; \
@@ -54,4 +66,4 @@ usb:
 		echo "USB port: $(PORT)"; \
 	fi
 # Phony targets
-.PHONY: all upload size clean
+.PHONY: all upload size clean usb
