@@ -1,7 +1,0 @@
-{
- "name": "Elijah Mitchell",
- "version": "1.0.2",
- "description": "UART communication library for ATmega2560",
- "platforms": ["atmelavr"],
- "frameworks": ["atmega2560"]
-}

@@ -1,5 +1,5 @@
 #include "uart.h"
-
+#include <stdio.h>
 /* Initialize the UART with baud rate */
 void uart_init(uint32_t baud_rate){
 	/* ubrr: USART Baud Rate Register Value as a 16-bit uint
@@ -45,7 +45,7 @@ void uart_transmit(unsigned char data){
 	 */
 /* Put data into the buffer, sends data */
 	UDR0 = data; // USART Data Register
-
+}
 /* Send each character in string to transmit */
 void uart_print(const char* str){
 	while(*str) {
